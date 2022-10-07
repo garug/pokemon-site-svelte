@@ -17,6 +17,7 @@ specifiers:
   prettier-plugin-svelte: ^2.7.0
   svelte: ^3.46.0
   svelte-check: ^2.7.1
+  svelte-modals: ^1.2.0
   svelte-preprocess: ^4.10.6
   tslib: ^2.3.1
   typescript: ^4.7.4
@@ -24,6 +25,7 @@ specifiers:
 
 dependencies:
   axios: 0.27.2
+  svelte-modals: 1.2.0
 
 devDependencies:
   '@fontsource/fira-mono': 4.5.10
@@ -1973,6 +1975,10 @@ packages:
     dependencies:
       svelte: 3.50.1
     dev: true
+
+  /svelte-modals/1.2.0:
+    resolution: {integrity: sha512-t2aRTu42olRtXsiIvL/RXImy0BiaSWqKCGXIkN9RL7shzvkPXC4rxfbvi1Y3qS/4XeJ6Av1lLxQty/pxNGXg4A==}
+    dev: false
 
   /svelte-preprocess/4.10.7_qy6w2iv5hnh55blsjuu7uihyzm:
     resolution: {integrity: sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==}
