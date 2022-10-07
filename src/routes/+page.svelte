@@ -4,6 +4,7 @@
 	import { env } from "$env/dynamic/public";
 
 	import Modal from '../components/DialogPokemon.svelte';
+	import DialogPokemonInfo from '../components/DialogPokemonInfo.svelte';
 
 	let pokemon: any[] = [];
 
@@ -99,7 +100,7 @@
 				</thead>
 				<tbody>
 					{#each pokemon as poke}
-						<tr>
+						<tr class="pokemon-line" on:click={() => openModal(DialogPokemonInfo, { pokemon: poke })}>
 							<td
 								>{poke.id}
 								<button class="small" on:click={() => copyId(poke.id)}>copy</button></td
@@ -112,7 +113,7 @@
 							</td>
 							<td>
 								{poke.total.toFixed(0)}
-								<button class="small" on:click={() => openModal(Modal, { pokemon: poke })}>
+								<button class="small" on:click|stopPropagation={() => openModal(Modal, { pokemon: poke })}>
 									i
 								</button>
 							</td>
@@ -200,6 +201,11 @@
 	.pokemon-icon img {
 		width: 68px;
 		height: 56px;
+	}
+
+	.pokemon-line:hover {
+		cursor: pointer;
+		background: rgba(0,0,0,.1)
 	}
 
 	.pagination {
