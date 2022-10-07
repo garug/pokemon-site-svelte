@@ -1,6 +1,7 @@
 <script lang="ts">
 	import axios from 'axios';
 	import { openModal } from 'svelte-modals';
+	import { env } from "$env/dynamic/public";
 
 	import Modal from '../components/DialogPokemon.svelte';
 
@@ -27,7 +28,6 @@
 		clearTimeout(timer);
 		timer = setTimeout(() => {
 			pagination.page = 1;
-			// @ts-ignore: Already validate parameter value with `typeof`
 			pagination[key] = value;
 			pagination = pagination;
 		}, time);
@@ -43,10 +43,16 @@
 
 	$: {
 		loading = true;
+
+		const params = new URLSearchParams({
+			page: String(pagination.page),
+			name: pagination.search,
+			user: pagination.user,
+			shiny: String(pagination.shiny),
+		});
+
 		axios
-			.get(
-				`https://garug-pokemon-bot.herokuapp.com/pokemon?page=${pagination.page}&name=${pagination.search}&user=${pagination.user}&shiny=${pagination.shiny}`
-			)
+			.get(`${env.PUBLIC_API_KEY}/pokemon?${params.toString()}`)
 			.then((response) => (pokemon = response.data))
 			.catch((e) => console.error('error on request'))
 			.finally(() => (loading = false));
@@ -58,18 +64,18 @@
 		<h1>Filters</h1>
 		<form class="filter-form">
 			<input
-				on:keyup={({ target: { value } }) => debounceSearch('search', value)}
+				on:keyup={({ currentTarget: { value } }) => debounceSearch('search', value)}
 				type="text"
 				placeholder="Species"
 			/>
 			<input
-				on:keyup={({ target: { value } }) => debounceSearch('user', value)}
+				on:keyup={({ currentTarget: { value } }) => debounceSearch('user', value)}
 				type="text"
 				placeholder="User"
 			/>
 			<label>
 				<input
-					on:change={({ target: { checked } }) => debounceSearch('shiny', checked, 0)}
+					on:change={({ currentTarget: { checked } }) => debounceSearch('shiny', checked, 0)}
 					type="checkbox"
 				/>
 				Shiny?
