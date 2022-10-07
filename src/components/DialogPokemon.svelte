@@ -1,23 +1,10 @@
 <script lang="ts">
-	import { cubicInOut } from 'svelte/easing';
-	import type { TransitionConfig } from 'svelte/transition';
+	import { jump } from "./jump";
 
 	// provided by <Modals />
 	export let isOpen: boolean;
 
 	export let pokemon: any;
-
-	function jump(_: Element): TransitionConfig {
-		return {
-			easing: cubicInOut,
-			duration: 300,
-			css: (t) => {
-				const valor = 32;
-				const translateY = valor - t * valor;
-				return `transform: translateY(${translateY}px); opacity:${t}`;
-			}
-		};
-	}
 </script>
 
 {#if isOpen}
