@@ -8,6 +8,10 @@
 
 	let pokemon: any[] = [];
 
+	let totalElements = 0;
+
+	$: lastPage = Number((totalElements / 10).toFixed(0));
+
 	let pagination = {
 		page: 1,
 		shiny: false,
@@ -30,7 +34,6 @@
 		timer = setTimeout(() => {
 			pagination.page = 1;
 			pagination[key] = value;
-			pagination = pagination;
 		}, time);
 	}
 
@@ -49,12 +52,15 @@
 			page: String(pagination.page),
 			name: pagination.search,
 			user: pagination.user,
-			shiny: String(pagination.shiny),
+			shiny: String(pagination.shiny)
 		});
 
 		axios
 			.get(`${env.PUBLIC_API_KEY}/pokemon?${params.toString()}`)
-			.then((response) => (pokemon = response.data))
+			.then((response) => {
+				totalElements = Number(response.headers['pagination-count']);
+				pokemon = response.data;
+			})
 			.catch((e) => console.error('error on request'))
 			.finally(() => (loading = false));
 	}
@@ -100,9 +106,12 @@
 				</thead>
 				<tbody>
 					{#each pokemon as poke}
-						<tr class="pokemon-line" on:click={() => openModal(DialogPokemonInfo, { pokemon: poke })}>
-							<td
-								>{poke.id}
+						<tr
+							class="pokemon-line"
+							on:click={() => openModal(DialogPokemonInfo, { pokemon: poke })}
+						>
+							<td>
+								{poke.id}
 								<button class="small" on:click={() => copyId(poke.id)}>copy</button></td
 							>
 							<td class="pokemon-icon">
@@ -113,7 +122,10 @@
 							</td>
 							<td>
 								{poke.total.toFixed(0)}
-								<button class="small" on:click|stopPropagation={() => openModal(Modal, { pokemon: poke })}>
+								<button
+									class="small"
+									on:click|stopPropagation={() => openModal(Modal, { pokemon: poke })}
+								>
 									i
 								</button>
 							</td>
@@ -128,12 +140,24 @@
 				<tr />
 			</table>
 			<div class="pagination">
+				<p class="pagination-info">
+					{pagination.page * 10 - 9} - {pagination.page * 10} of {totalElements}
+				</p>
+				<button disabled={pagination.page === 1} on:click={() => debounceSearch('page', 1, 0)}
+					>first</button
+				>
 				<button
 					disabled={pagination.page === 1}
-					on:click={() => debounceSearch('page', --pagination.page, 0)}>prev</button
+					on:click={() => debounceSearch('page', pagination.page - 1, 0)}>prev</button
 				>
-				<p class="pagination-info">Actual page: {pagination.page}</p>
-				<button on:click={() => debounceSearch('page', ++pagination.page, 0)}>next</button>
+				<button
+					disabled={pagination.page === lastPage}
+					on:click={() => debounceSearch('page', pagination.page + 1, 0)}>next</button
+				>
+				<button
+					disabled={pagination.page === lastPage}
+					on:click={() => debounceSearch('page', lastPage, 0)}>last</button
+				>
 			</div>
 		{/if}
 	</section>
@@ -180,7 +204,7 @@
 	/* Filters */
 	.filters {
 		width: 300px;
-		margin-bottom: 32px
+		margin-bottom: 32px;
 	}
 
 	.filter-form {
@@ -211,12 +235,12 @@
 	.pokemon-icon img {
 		width: 68px;
 		height: 56px;
-		object-fit: cover
+		object-fit: cover;
 	}
 
 	.pokemon-line:hover {
 		cursor: pointer;
-		background: rgba(0,0,0,.1)
+		background: rgba(0, 0, 0, 0.1);
 	}
 
 	.pagination {
@@ -224,9 +248,6 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
-
-	.pagination-info {
-		margin: 0 16px;
+		gap: 8px;
 	}
 </style>
