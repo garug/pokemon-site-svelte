@@ -60,7 +60,7 @@
 	}
 </script>
 
-<main>
+<main class="page">
 	<section class="filters">
 		<h1>Filters</h1>
 		<form class="filter-form">
@@ -173,9 +173,14 @@
 		all: revert;
 	}
 
+	.page {
+		flex-wrap: wrap;
+	}
+
 	/* Filters */
 	.filters {
 		width: 300px;
+		margin-bottom: 32px
 	}
 
 	.filter-form {
@@ -195,12 +200,18 @@
 	}
 
 	.result {
-		width: 100%;
+		flex-grow: 1;
+	}
+
+	.pokemon-icon {
+		padding-left: 0;
+		padding-right: 0;
 	}
 
 	.pokemon-icon img {
 		width: 68px;
 		height: 56px;
+		object-fit: cover
 	}
 
 	.pokemon-line:hover {
