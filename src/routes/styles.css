@@ -124,6 +124,6 @@ button.small {
 }
 
 button:disabled {
-  cursor: default;
+  cursor: not-allowed;
   background: #282b37;
 }
