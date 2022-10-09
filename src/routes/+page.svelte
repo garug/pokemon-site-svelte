@@ -5,6 +5,7 @@
 
 	import Modal from '../components/DialogPokemon.svelte';
 	import DialogPokemonInfo from '../components/DialogPokemonInfo.svelte';
+	import Toggle from '../components/Toggle.svelte';
 
 	let pokemon: any[] = [];
 
@@ -80,13 +81,7 @@
 				type="text"
 				placeholder="User"
 			/>
-			<label>
-				<input
-					on:change={({ currentTarget: { checked } }) => debounceSearch('shiny', checked, 0)}
-					type="checkbox"
-				/>
-				Shiny?
-			</label>
+			<Toggle on:change={({ currentTarget: { checked } }) => debounceSearch('shiny', checked, 0)} label="Shiny?"/>
 		</form>
 	</section>
 	<section class="result">
@@ -187,14 +182,6 @@
 		padding: 8px 16px;
 		border-radius: 8px;
 		background: #282b37;
-	}
-
-	label {
-		cursor: pointer;
-	}
-
-	input[type='checkbox'] {
-		all: revert;
 	}
 
 	.page {
