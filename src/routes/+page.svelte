@@ -136,7 +136,7 @@
 			</table>
 			<div class="pagination">
 				<p class="pagination-info">
-					{pagination.page * 10 - 9} - {pagination.page * 10} of {totalElements}
+					{pagination.page * 10 - 9} - {Math.min(pagination.page * 10, totalElements)} of {totalElements}
 				</p>
 				<button disabled={pagination.page === 1} on:click={() => debounceSearch('page', 1, 0)}
 					>first</button
