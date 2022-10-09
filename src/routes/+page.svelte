@@ -11,7 +11,7 @@
 
 	let totalElements = 0;
 
-	$: lastPage = Number((totalElements / 10).toFixed(0));
+	$: lastPage = Math.max(1, Number((totalElements / 10).toFixed(0)));
 
 	let pagination = {
 		page: 1,
